@@ -6,6 +6,7 @@ const articleSchema = new mongoose.Schema({
   addTime: { type: Date, required: true, default: new Date() },
   author: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true },
   updatedTime: { type: Date, required: true, default: new Date() },
+  category: { type: mongoose.Schema.Types.ObjectId, ref: 'category', required: true },
   commentNum: { type: Number, required: true, default: 0 },
   viewNum: { type: Number, required: true, default: 0 }
 })

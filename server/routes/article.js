@@ -11,18 +11,20 @@ router.prefix('/article')
  *
  * @apiParam {String} title (必填)文章标题.
  * @apiParam {String} content (必填)文章内容.
+ * @apiParam {String} category (必填)分类id.
  *
  * @apiSuccess {String} code code状态码.
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/add', jwtCheck, async (ctx) => {
-  const { title, content } = ctx.request.body
-  if (title && content) {
+  const { title, content, category } = ctx.request.body
+  if (title && content && category) {
     try {
       let res = await articleModel.create({
         title,
         content,
-        author: ctx.request.jwtInfo._id
+        author: ctx.request.jwtInfo._id,
+        category
       })
       ctx.body = {
         code: '000000',
@@ -51,6 +53,7 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiParam {String} _id 文章id.
  * @apiParam {String} title 文章标题.
  * @apiParam {String} content 文章内容.
+ * @apiParam {String} category 分类ID.
  * @apiParam {Number} pageSize 每页条数,默认5条.
  * @apiParam {Number} currentPage 当前页数,默认第1页.
  *
@@ -58,25 +61,28 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.get('/page', jwtCheck, async (ctx) => {
-  const { _id, title, content } = ctx.request.query
+  const { _id, title, content, category } = ctx.request.query
   const pageSize = Number(ctx.request.query.pageSize) || 5
   const currentPage = Number(ctx.request.query.currentPage) || 1
   let findInfo = {
     title: { $regex: new RegExp(title) },
     content: { $regex: new RegExp(content) }
   }
+  if (category) {
+    findInfo.category = category
+  }
   try {
     if (_id) {
       findInfo._id = _id
       await articleModel.updateOne({ _id }, { $inc: { viewNum: 1 } })
-      let res = await articleModel.findOne(findInfo, '-content').populate('author', 'username')
+      let res = await articleModel.findOne(findInfo, '-content').populate('author', 'username').populate('category', 'name')
       ctx.body = {
         code: '000000',
         msg: '查询成功',
         data: res
       }
     } else {
-      let res = await articleModel.find(findInfo).populate('author', 'username').limit(pageSize).skip((currentPage - 1) * pageSize)
+      let res = await articleModel.find(findInfo).populate('author', 'username').populate('category', 'name').limit(pageSize).skip((currentPage - 1) * pageSize)
       let total = await articleModel.countDocuments(findInfo)
       ctx.body = {
         code: '000000',
@@ -106,19 +112,23 @@ router.get('/page', jwtCheck, async (ctx) => {
  * @apiParam {String} _id (必填)文章id.
  * @apiParam {String} title 文章标题.
  * @apiParam {String} content 文章内容.
+ * @apiParam {String} category 分类ID.
  *
  * @apiSuccess {String} code code状态码.
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/update', jwtCheck, async (ctx) => {
-  const { _id, title, content } = ctx.request.body
-  if (_id && (title || content)) {
+  const { _id, title, content, category } = ctx.request.body
+  if (_id && (title || content || category)) {
     let updateInfo = { updatedTime: new Date() }
     if (title) {
       updateInfo.title = title
     }
     if (content) {
       updateInfo.content = content
+    }
+    if (category) {
+      updateInfo.category = category
     }
     try {
       let res = await articleModel.updateOne({ _id }, updateInfo)

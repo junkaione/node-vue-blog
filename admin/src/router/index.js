@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
 import Index from '../views/Index/index.vue'
 import User from '../views/User/index.vue'
@@ -44,6 +45,11 @@ export default new Router({
           component: Comment,
         },
       ]
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: Login,
     }
   ]
 })

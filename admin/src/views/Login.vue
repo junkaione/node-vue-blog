@@ -10,7 +10,7 @@
           <el-input v-model="loginInfo.password" show-password prefix-icon="el-icon-unlock"></el-input>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">立即登录</el-button>
+          <el-button type="primary" @click="handleLogin">立即登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -23,6 +23,18 @@ export default {
     return {
       loginInfo: {}
     };
+  },
+  methods: {
+    handleLogin() {
+      this.$http
+        .post("http://localhost:3000/user/login")
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>

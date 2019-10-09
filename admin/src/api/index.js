@@ -1,5 +1,5 @@
 const Host = 'http://localhost:3000'
 
-module.exprot = {
+export default {
   LoginApi: `${Host}/user/login`
 }

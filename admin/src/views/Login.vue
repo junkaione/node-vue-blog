@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { LoginApi } from "@/api";
+import Api from "@/api";
 
 export default {
   name: "login",
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.$post(LoginApi, this.loginInfo).then(res => {
+      this.$post(Api.LoginApi, this.loginInfo).then(res => {
         if (res.data.type === 1) {
           this.$message({
             type: "success",

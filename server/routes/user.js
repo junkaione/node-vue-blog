@@ -69,6 +69,8 @@ router.post('/login', async (ctx, next) => {
             code: '000000',
             msg: '登录成功',
             data: {
+              username: res[0].username,
+              type: res[0].type,
               token
             }
           }

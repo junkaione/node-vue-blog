@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import { LoginApi } from "@/api";
+
 export default {
   name: "login",
   data() {
@@ -27,24 +29,21 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.$post("http://localhost:3000/user/login", this.loginInfo).then(
-        res => {
-          console.log(res);
-          if (res.data.type === 1) {
-            this.$message({
-              type: "success",
-              message: res.msg
-            });
-            window.localStorage.setItem("token", res.data.token);
-            this.$router.push("/");
-          } else {
-            this.$message({
-              type: "warning",
-              message: "权限不足, 登录失败"
-            });
-          }
+      this.$post(LoginApi, this.loginInfo).then(res => {
+        if (res.data.type === 1) {
+          this.$message({
+            type: "success",
+            message: res.msg
+          });
+          window.localStorage.setItem("token", res.data.token);
+          this.$router.push("/");
+        } else {
+          this.$message({
+            type: "warning",
+            message: "权限不足, 登录失败"
+          });
         }
-      );
+      });
     }
   }
 };

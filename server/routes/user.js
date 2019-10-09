@@ -1,7 +1,7 @@
 const router = require('koa-router')()
 const userModel = require('../db/model/user')
 const bcrypt = require('bcryptjs')
-const { jwtSign } = require('../utils/jwt')
+const { jwtSign, jwtCheck } = require('../utils/jwt')
 
 router.prefix('/user')
 
@@ -97,6 +97,56 @@ router.post('/login', async (ctx, next) => {
     ctx.body = {
       code: '100002',
       msg: '参数错误'
+    }
+  }
+})
+
+router.get('/page', jwtCheck, async (ctx) => {
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id, username, type } = ctx.request.query
+    const pageSize = Number(ctx.request.query.pageSize) || 5
+    const currentPage = Number(ctx.request.query.currentPage) || 1
+    let findInfo = {
+      username: { $regex: new RegExp(username) }
+    }
+    if (type) {
+      findInfo.type = type
+    }
+    console.log(findInfo);
+    try {
+      if (_id) {
+        findInfo._id = _id
+        let res = await userModel.findOne(findInfo, "-password")
+        ctx.body = {
+          code: '000000',
+          msg: '查询成功',
+          data: res
+        }
+      } else {
+        let res = await userModel.find(findInfo, "-password").limit(pageSize).skip((currentPage - 1) * pageSize)
+        let total = await userModel.countDocuments(findInfo)
+        ctx.body = {
+          code: '000000',
+          msg: '查询成功',
+          data: {
+            result: res,
+            pageSize,
+            currentPage,
+            total,
+          }
+        }
+      }
+    } catch (e) {
+      ctx.body = {
+        code: '100001',
+        msg: '系统错误',
+        info: e
+      }
+    }
+  } else {
+    ctx.body = {
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })

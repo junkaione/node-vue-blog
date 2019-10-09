@@ -3,10 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './plugins/element.js'
-import axios from 'axios'
+import { get, post } from './api/request.js'
 
-Vue.prototype.$http = axios
 Vue.config.productionTip = false
+Vue.prototype.$get = get
+Vue.prototype.$post = post
 
 new Vue({
   router,

@@ -19,6 +19,7 @@
 
 <script>
 export default {
+  name: "login",
   data() {
     return {
       loginInfo: {}
@@ -26,14 +27,9 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.$http
-        .post("http://localhost:3000/user/login")
-        .then(res => {
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      this.$post("http://localhost:3000/user/login").then(res => {
+        console.log(res);
+      });
     }
   }
 };

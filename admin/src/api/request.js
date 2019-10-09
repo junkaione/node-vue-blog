@@ -57,10 +57,6 @@ export function get(url, params = {}) {
       .then(response => {
         if (response.data.code === '000000') {
           //返回成功处理  这里传的啥 后续调用的时候 res就是啥
-          Message({
-            type: 'success',
-            message: response.data.msg
-          })
           resolve(response.data);
         } else {
           //错误处理
@@ -89,10 +85,6 @@ export function post(url, data = {}) {
     axios.post(url, data)
       .then(response => {
         if (response.data.code === '000000') {
-          Message({
-            type: 'success',
-            message: response.data.msg
-          })
           resolve(response.data);
         } else {
           //错误处理

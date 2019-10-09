@@ -17,30 +17,37 @@ router.prefix('/article')
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/add', jwtCheck, async (ctx) => {
-  const { title, content, category } = ctx.request.body
-  if (title && content && category) {
-    try {
-      let res = await articleModel.create({
-        title,
-        content,
-        author: ctx.request.jwtInfo._id,
-        category
-      })
-      ctx.body = {
-        code: '000000',
-        msg: '新增成功'
+  if (ctx.request.jwtInfo.type === 1) {
+    const { title, content, category } = ctx.request.body
+    if (title && content && category) {
+      try {
+        let res = await articleModel.create({
+          title,
+          content,
+          author: ctx.request.jwtInfo._id,
+          category
+        })
+        ctx.body = {
+          code: '000000',
+          msg: '新增成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
       }
-    } catch (e) {
+    } else {
       ctx.body = {
-        code: '100001',
-        msg: '系统错误',
-        info: e
+        code: '100002',
+        msg: '参数错误'
       }
     }
   } else {
     ctx.body = {
-      code: '100002',
-      msg: '参数错误'
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })
@@ -118,35 +125,42 @@ router.get('/page', async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/update', jwtCheck, async (ctx) => {
-  const { _id, title, content, category } = ctx.request.body
-  if (_id && (title || content || category)) {
-    let updateInfo = { updatedTime: new Date() }
-    if (title) {
-      updateInfo.title = title
-    }
-    if (content) {
-      updateInfo.content = content
-    }
-    if (category) {
-      updateInfo.category = category
-    }
-    try {
-      let res = await articleModel.updateOne({ _id }, updateInfo)
-      ctx.body = {
-        code: '000000',
-        msg: '修改成功'
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id, title, content, category } = ctx.request.body
+    if (_id && (title || content || category)) {
+      let updateInfo = { updatedTime: new Date() }
+      if (title) {
+        updateInfo.title = title
       }
-    } catch (e) {
+      if (content) {
+        updateInfo.content = content
+      }
+      if (category) {
+        updateInfo.category = category
+      }
+      try {
+        let res = await articleModel.updateOne({ _id }, updateInfo)
+        ctx.body = {
+          code: '000000',
+          msg: '修改成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
+      }
+    } else {
       ctx.body = {
-        code: '100001',
-        msg: '系统错误',
-        info: e
+        code: '100002',
+        msg: '参数错误'
       }
     }
   } else {
     ctx.body = {
-      code: '100002',
-      msg: '参数错误'
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })
@@ -162,25 +176,32 @@ router.post('/update', jwtCheck, async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/del', jwtCheck, async (ctx) => {
-  const { _id } = ctx.request.body
-  if (_id) {
-    try {
-      let res = await articleModel.remove({ _id })
-      ctx.body = {
-        code: '000000',
-        msg: '删除成功'
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id } = ctx.request.body
+    if (_id) {
+      try {
+        let res = await articleModel.remove({ _id })
+        ctx.body = {
+          code: '000000',
+          msg: '删除成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
       }
-    } catch (e) {
+    } else {
       ctx.body = {
-        code: '100001',
-        msg: '系统错误',
-        info: e
+        code: '100002',
+        msg: '参数错误'
       }
     }
   } else {
     ctx.body = {
-      code: '100002',
-      msg: '参数错误'
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })

@@ -31,7 +31,7 @@
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item>控制台</el-dropdown-item>
-            <el-dropdown-item>注销登录</el-dropdown-item>
+            <el-dropdown-item @click.native="loginOut">注销登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
         <span>超级管理员</span>
@@ -68,6 +68,19 @@
 export default {
   data() {
     return {};
+  },
+  methods: {
+    loginOut() {
+      this.$confirm("您确定注销登录吗?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      }).then(() => {
+        window.localStorage.clear();
+        window.sessionStorage.clear();
+        this.$router.push("/login");
+      });
+    }
   }
 };
 </script>

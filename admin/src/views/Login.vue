@@ -27,9 +27,12 @@ export default {
   },
   methods: {
     handleLogin() {
-      this.$post("http://localhost:3000/user/login").then(res => {
-        console.log(res);
-      });
+      this.$post("http://localhost:3000/user/login", this.loginInfo).then(
+        res => {
+          window.localStorage.setItem("token", res.data.token);
+          this.$router.push("/");
+        }
+      );
     }
   }
 };

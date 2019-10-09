@@ -72,59 +72,73 @@ router.get('/page', async (ctx) => {
 })
 
 router.post('/update', jwtCheck, async (ctx) => {
-  const { _id, article, user, comment } = ctx.request.body
-  if (_id && (article || user || comment)) {
-    let updateInfo = { updatedTime: new Date() }
-    if (article) {
-      updateInfo.article = article
-    }
-    if (user) {
-      updateInfo.user = user
-    }
-    if (comment) {
-      updateInfo.comment = comment
-    }
-    try {
-      let res = await commentModel.updateOne({ _id }, updateInfo)
-      ctx.body = {
-        code: '000000',
-        msg: '修改成功'
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id, article, user, comment } = ctx.request.body
+    if (_id && (article || user || comment)) {
+      let updateInfo = { updatedTime: new Date() }
+      if (article) {
+        updateInfo.article = article
       }
-    } catch (e) {
+      if (user) {
+        updateInfo.user = user
+      }
+      if (comment) {
+        updateInfo.comment = comment
+      }
+      try {
+        let res = await commentModel.updateOne({ _id }, updateInfo)
+        ctx.body = {
+          code: '000000',
+          msg: '修改成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
+      }
+    } else {
       ctx.body = {
         code: '100001',
-        msg: '系统错误',
-        info: e
+        msg: '参数错误'
       }
     }
   } else {
     ctx.body = {
-      code: '100001',
-      msg: '参数错误'
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })
 
 router.post('/del', jwtCheck, async (ctx) => {
-  const { _id } = ctx.request.body
-  if (_id) {
-    try {
-      let res = await commentModel.deleteOne({ _id })
-      ctx.body = {
-        code: '000000',
-        msg: '删除成功'
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id } = ctx.request.body
+    if (_id) {
+      try {
+        let res = await commentModel.deleteOne({ _id })
+        ctx.body = {
+          code: '000000',
+          msg: '删除成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
       }
-    } catch (e) {
+    } else {
       ctx.body = {
         code: '100001',
-        msg: '系统错误',
-        info: e
+        msg: '参数错误'
       }
     }
   } else {
     ctx.body = {
-      code: '100001',
-      msg: '参数错误'
+      code: '999998',
+      msg: '权限不足'
     }
   }
 })

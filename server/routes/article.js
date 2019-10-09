@@ -60,7 +60,7 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} code code状态码.
  * @apiSuccess {String} msg  msg提示信息.
  */
-router.get('/page', jwtCheck, async (ctx) => {
+router.get('/page', async (ctx) => {
   const { _id, title, content, category } = ctx.request.query
   const pageSize = Number(ctx.request.query.pageSize) || 5
   const currentPage = Number(ctx.request.query.currentPage) || 1

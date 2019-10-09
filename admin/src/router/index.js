@@ -10,7 +10,7 @@ import Comment from '../views/Comment/index.vue'
 
 Vue.use(Router)
 
-export default new Router({
+const router = new Router({
   mode: 'history',
   base: process.env.BASE_URL,
   routes: [
@@ -53,3 +53,18 @@ export default new Router({
     }
   ]
 })
+
+router.beforeEach((to, from, next) => {
+  if (to.path !== "/login") {
+    const token = window.localStorage.getItem('token')
+    if (token) {
+      next()
+    } else {
+      next("/login")
+    }
+  } else {
+    next()
+  }
+})
+
+export default router

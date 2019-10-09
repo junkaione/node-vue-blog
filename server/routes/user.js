@@ -112,7 +112,6 @@ router.get('/page', jwtCheck, async (ctx) => {
     if (type) {
       findInfo.type = type
     }
-    console.log(findInfo);
     try {
       if (_id) {
         findInfo._id = _id
@@ -141,6 +140,75 @@ router.get('/page', jwtCheck, async (ctx) => {
         code: '100001',
         msg: '系统错误',
         info: e
+      }
+    }
+  } else {
+    ctx.body = {
+      code: '999998',
+      msg: '权限不足'
+    }
+  }
+})
+
+router.post('/update', jwtCheck, async (ctx) => {
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id, username, type } = ctx.request.body
+    if (_id && (username || type)) {
+      let updateInfo = {}
+      if (username) {
+        updateInfo.username = username
+      }
+      if (type) {
+        updateInfo.type = type
+      }
+      try {
+        let res = await userModel.updateOne({ _id }, updateInfo)
+        ctx.body = {
+          code: '000000',
+          msg: '修改成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
+      }
+    } else {
+      ctx.body = {
+        code: '100002',
+        msg: '参数错误'
+      }
+    }
+  } else {
+    ctx.body = {
+      code: '999998',
+      msg: '权限不足'
+    }
+  }
+})
+
+router.post('/del', jwtCheck, async (ctx) => {
+  if (ctx.request.jwtInfo.type === 1) {
+    const { _id } = ctx.request.body
+    if (_id) {
+      try {
+        let res = await userModel.remove({ _id })
+        ctx.body = {
+          code: '000000',
+          msg: '删除成功'
+        }
+      } catch (e) {
+        ctx.body = {
+          code: '100001',
+          msg: '系统错误',
+          info: e
+        }
+      }
+    } else {
+      ctx.body = {
+        code: '100002',
+        msg: '参数错误'
       }
     }
   } else {

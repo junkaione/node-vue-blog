@@ -152,11 +152,14 @@ router.get('/page', jwtCheck, async (ctx) => {
 
 router.post('/update', jwtCheck, async (ctx) => {
   if (ctx.request.jwtInfo.type === 1) {
-    const { _id, username, type } = ctx.request.body
-    if (_id && (username || type)) {
+    const { _id, username, password, type } = ctx.request.body
+    if (_id && (username || type || password)) {
       let updateInfo = {}
       if (username) {
         updateInfo.username = username
+      }
+      if (password) {
+        updateInfo.password = bcrypt.hashSync(password, 10)
       }
       if (type) {
         updateInfo.type = type

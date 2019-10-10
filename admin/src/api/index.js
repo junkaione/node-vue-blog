@@ -11,4 +11,9 @@ export default {
   ArticleAddApi: `${Host}/article/add`, //文章新增
   ArticleUpdateApi: `${Host}/article/update`, //文章修改
   ArticleDelApi: `${Host}/article/del`, //文章删除
+
+  CategoryPageApi: `${Host}/category/list`, //分类列表
+  CategoryAddApi: `${Host}/category/add`, //分类新增
+  CategoryUpdateApi: `${Host}/category/update`, //分类修改
+  CategoryDelApi: `${Host}/category/del`, //分类删除
 }

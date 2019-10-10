@@ -6,9 +6,16 @@
       </el-form-item>
       <el-form-item>
         <el-select v-model="searchInfo.category" placeholder="文章分类" clearable>
-          <el-option label="超级管理员" :value="1"></el-option>
-          <el-option label="普通用户" :value="2"></el-option>
+          <el-option
+            v-for="(item, index) in CategoryList"
+            :key="index"
+            :label="item.name"
+            :value="item._id"
+          ></el-option>
         </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-input placeholder="文章作者" v-model="searchInfo.author" clearable></el-input>
       </el-form-item>
       <el-form-item>
         <el-button icon="el-icon-search" type="primary" @click="getArticleList">搜索</el-button>
@@ -18,6 +25,11 @@
     <el-table :data="tableData" border style="width: 100%">
       <el-table-column prop="_id" label="文章ID"></el-table-column>
       <el-table-column prop="title" label="文章标题"></el-table-column>
+      <el-table-column label="文章分类">
+        <template slot-scope="scope">
+          <div>{{scope.row.category.name}}</div>
+        </template>
+      </el-table-column>
       <el-table-column label="作者">
         <template slot-scope="scope">
           <div>{{scope.row.author.username}}</div>
@@ -93,6 +105,7 @@ export default {
         currentPage: 1,
         pageSize: 10
       },
+      CategoryList: [],
       changeInfo: {},
       dialogVisible: false,
       dialogTitle: "",
@@ -101,12 +114,18 @@ export default {
   },
   mounted() {
     this.getArticleList();
+    this.getCategoryList();
   },
   methods: {
     getArticleList() {
       this.$get(Api.ArticlePageApi, this.searchInfo).then(res => {
         this.tableData = res.data.result;
         this.total = res.data.total;
+      });
+    },
+    getCategoryList() {
+      this.$get(Api.CategoryPageApi).then(res => {
+        this.CategoryList = res.data;
       });
     },
     handleAdd() {

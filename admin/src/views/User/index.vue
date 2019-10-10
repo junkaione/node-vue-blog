@@ -35,6 +35,7 @@
       <el-pagination
         background
         layout="prev, pager, next"
+        :page-size="searchInfo.pageSize"
         :total="total"
         @current-change="handleCurrentChange"
       ></el-pagination>
@@ -76,7 +77,10 @@ export default {
     return {
       tableData: [],
       total: 0,
-      searchInfo: {},
+      searchInfo: {
+        currentPage: 1,
+        pageSize: 10
+      },
       changeInfo: {},
       dialogVisible: false,
       dialogTitle: "",
@@ -136,10 +140,11 @@ export default {
       });
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      this.searchInfo.currentPage = val;
+      this.getUserList();
     },
     handleClose() {
-      console.log("1");
+      this.changeInfo = {};
     }
   }
 };

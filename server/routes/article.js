@@ -82,14 +82,14 @@ router.get('/page', async (ctx) => {
     if (_id) {
       findInfo._id = _id
       await articleModel.updateOne({ _id }, { $inc: { viewNum: 1 } })
-      let res = await articleModel.findOne(findInfo, '-content').populate('author', 'username').populate('category', 'name')
+      let res = await articleModel.findOne(findInfo).populate('author', 'username').populate('category', 'name')
       ctx.body = {
         code: '000000',
         msg: '查询成功',
         data: res
       }
     } else {
-      let res = await articleModel.find(findInfo).populate('author', 'username').populate('category', 'name').limit(pageSize).skip((currentPage - 1) * pageSize)
+      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name').limit(pageSize).skip((currentPage - 1) * pageSize)
       let total = await articleModel.countDocuments(findInfo)
       ctx.body = {
         code: '000000',

@@ -23,8 +23,16 @@
           <div>{{scope.row.author.username}}</div>
         </template>
       </el-table-column>
-      <el-table-column prop="addTime" label="新增时间"></el-table-column>
-      <el-table-column prop="updatedTime" label="最后更新时间"></el-table-column>
+      <el-table-column label="新增时间">
+        <template slot-scope="scope">
+          <div>{{formatTime(scope.row.addTime)}}</div>
+        </template>
+      </el-table-column>
+      <el-table-column label="最后更新时间">
+        <template slot-scope="scope">
+          <div>{{formatTime(scope.row.updatedTime)}}</div>
+        </template>
+      </el-table-column>
       <el-table-column prop="commentNum" label="评论量"></el-table-column>
       <el-table-column prop="viewNum" label="阅读量"></el-table-column>
       <el-table-column label="操作">
@@ -74,6 +82,7 @@
 
 <script>
 import Api from "@/api";
+import { formatTime } from "@/util/common.js";
 
 export default {
   data() {
@@ -148,6 +157,9 @@ export default {
     },
     handleClose() {
       this.changeInfo = {};
+    },
+    formatTime(date) {
+      return formatTime(date, "s");
     }
   }
 };

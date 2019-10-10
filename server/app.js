@@ -43,6 +43,7 @@ app.use(index.routes(), index.allowedMethods())
 app.use(user.routes(), user.allowedMethods())
 app.use(article.routes(), article.allowedMethods())
 app.use(comment.routes(), comment.allowedMethods())
+app.use(category.routes(), category.allowedMethods())
 
 // error-handling
 app.on('error', (err, ctx) => {

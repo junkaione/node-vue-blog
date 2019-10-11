@@ -67,7 +67,7 @@
       class="dialog"
       :title="dialogTitle"
       :visible.sync="dialogVisible"
-      width="40%"
+      width="50%"
       @close="handleClose"
     >
       <el-form ref="changeForm" :model="changeInfo" label-width="90px">
@@ -85,10 +85,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="文章内容：">
-          <el-select v-model="changeInfo.type" placeholder="用户类型" clearable>
-            <el-option label="超级管理员" :value="1"></el-option>
-            <el-option label="普通用户" :value="2"></el-option>
-          </el-select>
+          <WangEditor v-model="changeInfo.content" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -102,6 +99,7 @@
 <script>
 import Api from "@/api";
 import { formatTime } from "@/util/common.js";
+import WangEditor from "@/components/wangEditor";
 
 export default {
   data() {
@@ -116,8 +114,12 @@ export default {
       changeInfo: {},
       dialogVisible: false,
       dialogTitle: "",
-      handleChangeUrl: ""
+      handleChangeUrl: "",
+      detail: ""
     };
+  },
+  components: {
+    WangEditor
   },
   mounted() {
     this.getArticleList();
@@ -166,7 +168,8 @@ export default {
       });
     },
     handleSure() {
-      this.$post(this.handleChangeUrl, this.changeInfo).then(res => {
+      console.log(this.changeInfo.content);
+      /* this.$post(this.handleChangeUrl, this.changeInfo).then(res => {
         if (res.code === "000000") {
           this.dialogVisible = false;
           this.$message({
@@ -175,7 +178,7 @@ export default {
           });
           this.getUserList();
         }
-      });
+      }); */
     },
     handleCurrentChange(val) {
       this.searchInfo.currentPage = val;

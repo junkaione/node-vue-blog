@@ -1,6 +1,8 @@
 const Host = 'http://localhost:3000'
 
 export default {
+  UploadApi: `${Host}/upload`, //图片上传
+
   LoginApi: `${Host}/user/login`, //用户登录
   UserPageApi: `${Host}/user/page`, //用户列表
   UserAddApi: `${Host}/user/reg`, //用户新增

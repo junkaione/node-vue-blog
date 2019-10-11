@@ -1,4 +1,5 @@
 const router = require('koa-router')()
+const userModel = require('../db/model/user')
 const articleModel = require('../db/model/article')
 const { jwtCheck } = require('../utils/jwt')
 
@@ -68,7 +69,7 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.get('/page', async (ctx) => {
-  const { _id, title, content, category } = ctx.request.query
+  const { _id, title, content, category, author } = ctx.request.query
   const pageSize = Number(ctx.request.query.pageSize) || 5
   const currentPage = Number(ctx.request.query.currentPage) || 1
   let findInfo = {
@@ -79,6 +80,10 @@ router.get('/page', async (ctx) => {
     findInfo.category = category
   }
   try {
+    if (author) {
+      let res = await userModel.findOne({ username: author })
+      findInfo.author = res._id
+    }
     if (_id) {
       findInfo._id = _id
       await articleModel.updateOne({ _id }, { $inc: { viewNum: 1 } })

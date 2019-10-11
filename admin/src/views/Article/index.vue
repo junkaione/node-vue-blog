@@ -71,13 +71,20 @@
       @close="handleClose"
     >
       <el-form ref="changeForm" :model="changeInfo" label-width="90px">
-        <el-form-item label="用户名：">
-          <el-input v-model="changeInfo.username"></el-input>
+        <el-form-item label="文章标题：">
+          <el-input v-model="changeInfo.title"></el-input>
         </el-form-item>
-        <el-form-item label="密码：">
-          <el-input v-model="changeInfo.password" show-password></el-input>
+        <el-form-item label="文章分类：">
+          <el-select v-model="changeInfo.category" placeholder="文章分类" clearable>
+            <el-option
+              v-for="(item, index) in CategoryList"
+              :key="index"
+              :label="item.name"
+              :value="item._id"
+            ></el-option>
+          </el-select>
         </el-form-item>
-        <el-form-item label="用户类型：" v-if="dialogTitle === '修改'">
+        <el-form-item label="文章内容：">
           <el-select v-model="changeInfo.type" placeholder="用户类型" clearable>
             <el-option label="超级管理员" :value="1"></el-option>
             <el-option label="普通用户" :value="2"></el-option>

@@ -68,6 +68,7 @@
       :title="dialogTitle"
       :visible.sync="dialogVisible"
       width="50%"
+      top="5vh"
       @close="handleClose"
     >
       <el-form ref="changeForm" :model="changeInfo" label-width="90px">
@@ -114,8 +115,7 @@ export default {
       changeInfo: {},
       dialogVisible: false,
       dialogTitle: "",
-      handleChangeUrl: "",
-      detail: ""
+      handleChangeUrl: ""
     };
   },
   components: {
@@ -140,21 +140,24 @@ export default {
     handleAdd() {
       this.dialogVisible = true;
       this.dialogTitle = "添加";
-      this.handleChangeUrl = Api.UserAddApi;
+      this.handleChangeUrl = Api.ArticleAddApi;
     },
     handleEdit(row) {
       this.dialogVisible = true;
       this.dialogTitle = "修改";
-      this.handleChangeUrl = Api.UserEditApi;
-      this.changeInfo = row;
+      this.handleChangeUrl = Api.ArticleUpdateApi;
+      this.$get(Api.ArticlePageApi, { _id: row._id }).then(res => {
+        res.data.category = res.data.category._id;
+        this.changeInfo = res.data;
+      });
     },
     handleDel(row) {
-      this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {
+      this.$confirm("此操作将永久删除该文章, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(() => {
-        this.$post(Api.UserDelApi, {
+        this.$post(Api.ArticleDelApi, {
           _id: row._id
         }).then(res => {
           if (res.code === "000000") {
@@ -162,27 +165,26 @@ export default {
               type: "success",
               message: res.msg
             });
-            this.getUserList();
+            this.getArticleList();
           }
         });
       });
     },
     handleSure() {
-      console.log(this.changeInfo.content);
-      /* this.$post(this.handleChangeUrl, this.changeInfo).then(res => {
+      this.$post(this.handleChangeUrl, this.changeInfo).then(res => {
         if (res.code === "000000") {
           this.dialogVisible = false;
           this.$message({
             type: "success",
             message: res.msg
           });
-          this.getUserList();
+          this.getArticleList();
         }
-      }); */
+      });
     },
     handleCurrentChange(val) {
       this.searchInfo.currentPage = val;
-      this.getUserList();
+      this.getArticleList();
     },
     handleClose() {
       this.changeInfo = {};

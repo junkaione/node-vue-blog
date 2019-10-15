@@ -47,7 +47,7 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} code code状态码.
  * @apiSuccess {String} msg  msg提示信息.
  */
-router.get('/list', jwtCheck, async (ctx) => {
+router.get('/list', async (ctx) => {
   try {
     let res = await categoryModel.find()
     ctx.body = ({

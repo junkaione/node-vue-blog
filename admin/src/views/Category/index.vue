@@ -2,10 +2,6 @@
   <div class="category">
     <el-form ref="searchForm" :model="searchInfo" :inline="true">
       <el-form-item>
-        <el-input placeholder="分类名" v-model="searchInfo.name" clearable></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button icon="el-icon-search" type="primary" @click="getCategoryList">搜索</el-button>
         <el-button icon="el-icon-edit" type="primary" @click="handleAdd">添加</el-button>
       </el-form-item>
     </el-form>
@@ -19,15 +15,6 @@
         </template>
       </el-table-column>
     </el-table>
-    <div class="pagination">
-      <el-pagination
-        background
-        layout="prev, pager, next"
-        :page-size="searchInfo.pageSize"
-        :total="total"
-        @current-change="handleCurrentChange"
-      ></el-pagination>
-    </div>
     <el-dialog
       class="dialog"
       :title="dialogTitle"
@@ -55,11 +42,7 @@ export default {
   data() {
     return {
       tableData: [],
-      total: 0,
-      searchInfo: {
-        currentPage: 1,
-        pageSize: 10
-      },
+      searchInfo: {},
       changeInfo: {},
       dialogVisible: false,
       dialogTitle: "",
@@ -72,8 +55,7 @@ export default {
   methods: {
     getCategoryList() {
       this.$get(Api.CategoryPageApi, this.searchInfo).then(res => {
-        this.tableData = res.data.result;
-        this.total = res.data.total;
+        this.tableData = res.data;
       });
     },
     handleAdd() {
@@ -85,7 +67,7 @@ export default {
       this.dialogVisible = true;
       this.dialogTitle = "修改";
       this.handleChangeUrl = Api.CategoryUpdateApi;
-      this.changeInfo = row;
+      this.changeInfo = JSON.parse(JSON.stringify(row));
     },
     handleDel(row) {
       this.$confirm("此操作将永久删除该分类, 是否继续?", "提示", {
@@ -117,10 +99,6 @@ export default {
           this.getCategoryList();
         }
       });
-    },
-    handleCurrentChange(val) {
-      this.searchInfo.currentPage = val;
-      this.getCategoryList();
     },
     handleClose() {
       this.changeInfo = {};

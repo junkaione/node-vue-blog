@@ -106,7 +106,7 @@ export default {
       this.dialogVisible = true;
       this.dialogTitle = "修改";
       this.handleChangeUrl = Api.UserEditApi;
-      this.changeInfo = row;
+      this.changeInfo = JSON.parse(JSON.stringify(row));
     },
     handleDel(row) {
       this.$confirm("此操作将永久删除该用户, 是否继续?", "提示", {

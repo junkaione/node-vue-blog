@@ -5,9 +5,12 @@
       <div class="des">张仿松个人博客是一个关注PHP技术的个人博客，提供一个互联网从业者的学习成果和工作经验总结。</div>
     </div>
     <div class="nav">
-      <div class="nav-item">首页</div>
-      <div class="nav-item">服务器</div>
-      <div class="nav-item">PHP语言</div>
+      <nuxt-link
+        :to="item.url"
+        class="nav-item"
+        v-for="(item, index) in navList"
+        :key="index"
+      >{{item.name}}</nuxt-link>
     </div>
     <nuxt />
     <div class="copy">
@@ -20,6 +23,34 @@
     </div>
   </div>
 </template>
+
+<script>
+import $axios from "@/api/request.js";
+import Api from "@/api";
+export default {
+  data() {
+    return {
+      navList: []
+    };
+  },
+  mounted() {
+    this.getNavList();
+  },
+  methods: {
+    getNavList() {
+      $axios.get(Api.CategoryPageApi).then(res => {
+        if (res.code === "000000") {
+          res.data.unshift({
+            name: "全部",
+            url: "/"
+          });
+          this.navList = res.data;
+        }
+      });
+    }
+  }
+};
+</script>
 
 <style lang="scss">
 @import "@/assets/css/common.css";
@@ -52,6 +83,7 @@
       width: 100px;
       text-align: center;
       color: #6a6a6a;
+      text-decoration: none;
     }
   }
   .copy {

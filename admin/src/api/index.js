@@ -18,4 +18,9 @@ export default {
   CategoryAddApi: `${Host}/category/add`, //分类新增
   CategoryUpdateApi: `${Host}/category/update`, //分类修改
   CategoryDelApi: `${Host}/category/del`, //分类删除
+
+  CommentPageApi: `${Host}/comment/page`, //评论列表
+  CommentAddApi: `${Host}/comment/add`, //评论新增
+  CommentUpdateApi: `${Host}/comment/update`, //评论修改
+  CommentDelApi: `${Host}/comment/del`, //评论删除
 }

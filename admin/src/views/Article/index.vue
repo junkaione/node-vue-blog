@@ -32,7 +32,8 @@
       </el-table-column>
       <el-table-column label="作者">
         <template slot-scope="scope">
-          <div>{{scope.row.author.username}}</div>
+          <div v-if="scope.row.author">{{scope.row.author.username}}</div>
+          <div v-else>暂无作者信息</div>
         </template>
       </el-table-column>
       <el-table-column label="新增时间">

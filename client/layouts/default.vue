@@ -1,9 +1,77 @@
 <template>
-  <div>
+  <div class="nuxt-layout">
+    <div class="head">
+      <div class="title">张仿松个人博客</div>
+      <div class="des">张仿松个人博客是一个关注PHP技术的个人博客，提供一个互联网从业者的学习成果和工作经验总结。</div>
+    </div>
+    <div class="nav">
+      <div class="nav-item">首页</div>
+      <div class="nav-item">服务器</div>
+      <div class="nav-item">PHP语言</div>
+    </div>
     <nuxt />
+    <div class="copy">
+      <div class="links">
+        友情链接：
+        <span>百度</span>
+        <span>淘宝</span>
+      </div>
+      <div class="copy-info">浙ICP备16000810号-2</div>
+    </div>
   </div>
 </template>
 
-<style>
+<style lang="scss">
 @import "@/assets/css/common.css";
+.nuxt-layout {
+  max-width: 1200px;
+  margin: 40px auto;
+  padding: 30px;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(100, 100, 100, 0.3);
+  .head {
+    .title {
+      color: #515151;
+      font-size: 26px;
+      font-weight: bold;
+    }
+    .des {
+      color: #757575;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+  }
+  .nav {
+    display: flex;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    line-height: 50px;
+    border-bottom: 1px solid #ededed;
+    border-top: 1px solid #ededed;
+    .nav-item {
+      width: 100px;
+      text-align: center;
+      color: #6a6a6a;
+    }
+  }
+  .copy {
+    margin-top: 50px;
+    font-size: 12px;
+    .links {
+      color: #444;
+      margin-left: 10px;
+      line-height: 50px;
+      border-bottom: 1px solid #ededed;
+      border-top: 1px solid #ededed;
+      span {
+        color: #686868;
+      }
+    }
+    .copy-info {
+      color: #444;
+      margin-top: 20px;
+      text-align: center;
+    }
+  }
+}
 </style>

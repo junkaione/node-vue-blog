@@ -2,10 +2,6 @@
   <el-container>
     <el-aside width="200px">
       <el-menu router :default-active="$route.path">
-        <el-menu-item index="/">
-          <i class="el-icon-house"></i>
-          <span slot="title">控制台</span>
-        </el-menu-item>
         <el-menu-item index="/user">
           <i class="el-icon-user"></i>
           <span slot="title">用户管理</span>

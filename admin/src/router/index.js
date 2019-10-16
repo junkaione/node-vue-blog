@@ -2,7 +2,6 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Login from '../views/Login.vue'
 import Home from '../views/Home.vue'
-import Index from '../views/Index/index.vue'
 import User from '../views/User/index.vue'
 import Article from '../views/Article/index.vue'
 import Category from '../views/Category/index.vue'
@@ -21,8 +20,7 @@ const router = new Router({
       children: [
         {
           path: '',
-          name: 'index',
-          component: Index,
+          redirect: 'user'
         },
         {
           path: 'user',

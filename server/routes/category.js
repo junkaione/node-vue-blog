@@ -15,10 +15,10 @@ router.prefix('/category')
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/add', jwtCheck, async (ctx) => {
-  const { name } = ctx.request.body
-  if (name) {
+  const { name, url } = ctx.request.body
+  if (name && url) {
     try {
-      let res = await categoryModel.create({ name })
+      let res = await categoryModel.create({ name, url })
       ctx.body = {
         code: '000000',
         msg: '新增成功'
@@ -76,10 +76,17 @@ router.get('/list', async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.post('/update', jwtCheck, async (ctx) => {
-  const { _id, name } = ctx.request.body
-  if (_id && name) {
+  const { _id, name, url } = ctx.request.body
+  if (_id && name || url) {
+    let updateInfo = {}
+    if (name) {
+      updateInfo.name = name
+    }
+    if (url) {
+      updateInfo.url = url
+    }
     try {
-      let res = await categoryModel.updateOne({ _id }, { name })
+      let res = await categoryModel.updateOne({ _id }, updateInfo)
       ctx.body = {
         code: '000000',
         msg: '修改成功'

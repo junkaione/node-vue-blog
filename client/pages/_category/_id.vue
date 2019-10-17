@@ -11,6 +11,8 @@
           <span v-else>暂无信息</span>
         </span>
         <span>属于：{{articleDetail.category.name}} 分类</span>
+        <span>阅读量：{{articleDetail.viewNum}}</span>
+        <span>评论量：{{articleDetail.commentNum}}</span>
       </div>
     </div>
   </div>
@@ -38,7 +40,6 @@ export default {
         .then(res => {
           if (res.code === "000000") {
             this.articleDetail = res.data;
-            console.log(this.articleDetail);
           }
         });
     },

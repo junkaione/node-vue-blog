@@ -24,17 +24,23 @@
         <div class="hot-article">
           <div class="title">热门文章</div>
           <div class="list">
-            <div class="item" v-for="(item, index) in hotArticleList" :key="index">{{item.title}}</div>
+            <nuxt-link
+              class="item"
+              :to="item.category.url + '/' + item._id"
+              v-for="(item, index) in hotArticleList"
+              :key="index"
+            >{{item.title}}</nuxt-link>
           </div>
         </div>
         <div class="updated-article">
           <div class="title">最新文章</div>
           <div class="list">
-            <div
+            <nuxt-link
               class="item"
+              :to="item.category.url + '/' + item._id"
               v-for="(item, index) in updatedArticleList"
               :key="index"
-            >{{item.title}}</div>
+            >{{item.title}}</nuxt-link>
           </div>
         </div>
         <div class="category">
@@ -162,9 +168,13 @@ export default {
           color: #636363;
         }
         .list {
-          color: #757575;
           font-size: 13px;
           line-height: 30px;
+          display: flex;
+          flex-direction: column;
+          .item {
+            color: #757575;
+          }
         }
       }
       .updated-article {
@@ -176,9 +186,13 @@ export default {
           color: #636363;
         }
         .list {
-          color: #757575;
           font-size: 13px;
           line-height: 30px;
+          display: flex;
+          flex-direction: column;
+          .item {
+            color: #757575;
+          }
         }
       }
       .category {

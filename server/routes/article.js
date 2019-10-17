@@ -104,7 +104,7 @@ router.get('/page', async (ctx) => {
         data: res
       }
     } else {
-      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name').sort(sortInfo).limit(pageSize).skip((currentPage - 1) * pageSize)
+      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name url').sort(sortInfo).limit(pageSize).skip((currentPage - 1) * pageSize)
       let total = await articleModel.countDocuments(findInfo)
       ctx.body = {
         code: '000000',

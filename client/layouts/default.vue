@@ -103,11 +103,13 @@ export default {
       });
     },
     getUpdatedArticleList() {
-      $axios.get(Api.ArticlePageApi, { updatedTime: -1 }).then(res => {
-        if (res.code === "000000") {
-          this.updatedArticleList = res.data.result;
-        }
-      });
+      $axios
+        .get(Api.ArticlePageApi, { updatedTime: -1, pageSize: 4 })
+        .then(res => {
+          if (res.code === "000000") {
+            this.updatedArticleList = res.data.result;
+          }
+        });
     }
   }
 };

@@ -2,12 +2,16 @@
   <div class="index">
     <div class="article-list">
       <div class="item" v-for="(item, index) in articleList" :key="index">
-        <div class="title">{{item.title}}</div>
-        <div class="des">{{item.content}}</div>
+        <nuxt-link class="title" :to="item.category.url + '/' + item._id">{{item.title}}</nuxt-link>
+        <div class="des">{{item.des}}</div>
         <div class="bottom-info">
-          <span>发布于：2019-10-16</span>
-          <span>作者：2019-10-16</span>
-          <span>属于：Linux 分类</span>
+          <span>发布于：{{formatTime(item.addTime)}}</span>
+          <span>
+            作者：
+            <span v-if="item.author">{{item.author.username}}</span>
+            <span v-else>暂无信息</span>
+          </span>
+          <span>属于：{{item.category.name}} 分类</span>
         </div>
       </div>
     </div>
@@ -17,6 +21,7 @@
 <script>
 import $axios from "@/api/request.js";
 import Api from "@/api";
+import { formatTime } from "@/util/common.js";
 export default {
   data() {
     return {
@@ -33,6 +38,9 @@ export default {
           this.articleList = res.data.result;
         }
       });
+    },
+    formatTime(date) {
+      return formatTime(date, "s");
     }
   }
 };
@@ -48,7 +56,7 @@ export default {
         margin-top: 20px;
       }
       .title {
-        outline: none;
+        text-decoration: none;
         color: #21759b;
         font-size: 22px;
       }

@@ -53,10 +53,10 @@
     <div class="copy">
       <div class="links">
         友情链接：
-        <span>百度</span>
-        <span>淘宝</span>
+        <a href="http://baidu.com">百度</a>
+        <a href="http://taobao.com">淘宝</a>
       </div>
-      <div class="copy-info">浙ICP备16000810号-2</div>
+      <div class="copy-info">渝ICP备88888888号-1</div>
     </div>
   </div>
 </template>
@@ -82,7 +82,7 @@ export default {
       $axios.get(Api.CategoryPageApi).then(res => {
         if (res.code === "000000") {
           res.data.unshift({
-            name: "全部",
+            name: "首页",
             url: "/"
           });
           this.navList = res.data;
@@ -210,8 +210,9 @@ export default {
       line-height: 50px;
       border-bottom: 1px solid #ededed;
       border-top: 1px solid #ededed;
-      span {
+      a {
         color: #686868;
+        text-decoration: none;
       }
     }
     .copy-info {

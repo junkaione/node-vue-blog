@@ -12,7 +12,44 @@
         :key="index"
       >{{item.name}}</nuxt-link>
     </div>
-    <nuxt />
+    <div class="main">
+      <div class="content">
+        <nuxt />
+      </div>
+      <div class="side">
+        <div class="search">
+          <input class="primary-input" type="text" placeholder="搜索" />
+          <button class="primary-btn">搜索</button>
+        </div>
+        <div class="hot-article">
+          <div class="title">热门文章</div>
+          <div class="list">
+            <div class="item" v-for="(item, index) in hotArticleList" :key="index">{{item.title}}</div>
+          </div>
+        </div>
+        <div class="updated-article">
+          <div class="title">最新文章</div>
+          <div class="list">
+            <div
+              class="item"
+              v-for="(item, index) in updatedArticleList"
+              :key="index"
+            >{{item.title}}</div>
+          </div>
+        </div>
+        <div class="category">
+          <div class="title">分类目录</div>
+          <div class="list">
+            <nuxt-link
+              class="item"
+              :to="item.url"
+              v-for="(item, index) in navList"
+              :key="index"
+            >{{item.name}}</nuxt-link>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="copy">
       <div class="links">
         友情链接：
@@ -30,11 +67,15 @@ import Api from "@/api";
 export default {
   data() {
     return {
-      navList: []
+      navList: [],
+      hotArticleList: [],
+      updatedArticleList: []
     };
   },
   mounted() {
     this.getNavList();
+    this.getHotArticleList();
+    this.getUpdatedArticleList();
   },
   methods: {
     getNavList() {
@@ -45,6 +86,20 @@ export default {
             url: "/"
           });
           this.navList = res.data;
+        }
+      });
+    },
+    getHotArticleList() {
+      $axios.get(Api.ArticlePageApi, { viewNum: -1, pageSize: 4 }).then(res => {
+        if (res.code === "000000") {
+          this.hotArticleList = res.data.result;
+        }
+      });
+    },
+    getUpdatedArticleList() {
+      $axios.get(Api.ArticlePageApi, { updatedTime: -1 }).then(res => {
+        if (res.code === "000000") {
+          this.updatedArticleList = res.data.result;
         }
       });
     }
@@ -84,6 +139,66 @@ export default {
       text-align: center;
       color: #6a6a6a;
       text-decoration: none;
+    }
+  }
+  .main {
+    display: flex;
+    .content {
+      width: 70%;
+    }
+    .side {
+      width: 30%;
+      .search {
+        width: 260px;
+        display: flex;
+        justify-content: space-between;
+      }
+      .hot-article {
+        .title {
+          margin-top: 50px;
+          margin-bottom: 20px;
+          font-weight: bold;
+          font-size: 15px;
+          color: #636363;
+        }
+        .list {
+          color: #757575;
+          font-size: 13px;
+          line-height: 30px;
+        }
+      }
+      .updated-article {
+        .title {
+          margin-top: 50px;
+          margin-bottom: 20px;
+          font-weight: bold;
+          font-size: 15px;
+          color: #636363;
+        }
+        .list {
+          color: #757575;
+          font-size: 13px;
+          line-height: 30px;
+        }
+      }
+      .category {
+        .title {
+          margin-top: 50px;
+          margin-bottom: 20px;
+          font-weight: bold;
+          font-size: 15px;
+          color: #636363;
+        }
+        .list {
+          font-size: 13px;
+          line-height: 30px;
+          display: flex;
+          flex-direction: column;
+          .item {
+            color: #757575;
+          }
+        }
+      }
     }
   }
   .copy {

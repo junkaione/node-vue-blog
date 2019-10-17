@@ -69,7 +69,7 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.get('/page', async (ctx) => {
-  const { _id, title, content, category, author, addTime, updatedTime } = ctx.request.query
+  const { _id, title, content, category, author, addTime, updatedTime, viewNum } = ctx.request.query
   const pageSize = Number(ctx.request.query.pageSize) || 5
   const currentPage = Number(ctx.request.query.currentPage) || 1
   let findInfo = {
@@ -82,6 +82,9 @@ router.get('/page', async (ctx) => {
   }
   if (updatedTime) {
     sortInfo.updatedTime = updatedTime
+  }
+  if (viewNum) {
+    sortInfo.viewNum = viewNum
   }
   if (category) {
     findInfo.category = category

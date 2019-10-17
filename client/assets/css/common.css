@@ -47,3 +47,20 @@ html {
   color: #fff;
   background-color: #35495e;
 }
+
+.primary-input {
+  border: 1px solid #e3e3e3;
+  color: #565656;
+  padding: 6.5px 12px;
+  border-radius: 3px;
+  height: 30px;
+  font-size: 13px;
+}
+
+.primary-btn {
+  border: 0;
+  padding: 6.5px 15px;
+  color: #fff;
+  background-color: #5fbeaa;
+  border-radius: 3px;
+}

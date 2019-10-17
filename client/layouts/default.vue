@@ -87,6 +87,7 @@ export default {
     getNavList() {
       $axios.get(Api.CategoryPageApi).then(res => {
         if (res.code === "000000") {
+          sessionStorage.setItem("navList", JSON.stringify(res.data));
           res.data.unshift({
             name: "首页",
             url: "/"

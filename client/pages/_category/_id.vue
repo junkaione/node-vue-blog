@@ -1,10 +1,74 @@
 <template>
   <div class="detail">
-    <div>{{$route.params.category}}</div>
-    <div>{{$route.params.id}}</div>
+    <div class="article-detail" v-if="articleDetail">
+      <div class="title">{{articleDetail.title}}</div>
+      <div class="content" v-html="articleDetail.content"></div>
+      <div class="bottom-info">
+        <span>发布于：{{formatTime(articleDetail.addTime)}}</span>
+        <span>
+          作者：
+          <span v-if="articleDetail.author">{{articleDetail.author.username}}</span>
+          <span v-else>暂无信息</span>
+        </span>
+        <span>属于：{{articleDetail.category.name}} 分类</span>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-export default {};
+import $axios from "@/api/request.js";
+import Api from "@/api";
+import { formatTime } from "@/util/common.js";
+export default {
+  data() {
+    return {
+      articleDetail: null
+    };
+  },
+  mounted() {
+    this.getArticleDetail();
+  },
+  methods: {
+    getArticleDetail() {
+      $axios
+        .get(Api.ArticlePageApi, {
+          _id: this.$route.params.id
+        })
+        .then(res => {
+          if (res.code === "000000") {
+            this.articleDetail = res.data;
+            console.log(this.articleDetail);
+          }
+        });
+    },
+    formatTime(date) {
+      return formatTime(date, "s");
+    }
+  }
+};
 </script>
+
+<style lang="scss">
+.detail {
+  .article-detail {
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+    .title {
+      text-decoration: none;
+      color: #21759b;
+      font-size: 22px;
+    }
+    .content {
+      margin: 20px 0;
+      color: #444444;
+      font-size: 14px;
+      line-height: 24px;
+    }
+    .bottom-info {
+      color: #757575;
+      font-size: 13px;
+    }
+  }
+}
+</style>

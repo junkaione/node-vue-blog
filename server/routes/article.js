@@ -104,13 +104,18 @@ router.get('/page', async (ctx) => {
         data: res
       }
     } else {
-      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name url').sort(sortInfo).limit(pageSize).skip((currentPage - 1) * pageSize)
+      let res = await articleModel.find(findInfo).populate('author', 'username').populate('category', 'name url').sort(sortInfo).limit(pageSize).skip((currentPage - 1) * pageSize)
       let total = await articleModel.countDocuments(findInfo)
+      let formatRes = JSON.parse(JSON.stringify(res))
+      formatRes.forEach((item, index) => {
+        formatRes[index].des = item.content.replace(/<[^<>]+>/g, " ").substr(0, 120)
+        delete formatRes[index].content
+      })
       ctx.body = {
         code: '000000',
         msg: '查询成功',
         data: {
-          result: res,
+          result: formatRes,
           pageSize,
           currentPage,
           total,

@@ -69,12 +69,19 @@ router.post('/add', jwtCheck, async (ctx) => {
  * @apiSuccess {String} msg  msg提示信息.
  */
 router.get('/page', async (ctx) => {
-  const { _id, title, content, category, author } = ctx.request.query
+  const { _id, title, content, category, author, addTime, updatedTime } = ctx.request.query
   const pageSize = Number(ctx.request.query.pageSize) || 5
   const currentPage = Number(ctx.request.query.currentPage) || 1
   let findInfo = {
     title: { $regex: new RegExp(title) },
     content: { $regex: new RegExp(content) }
+  }
+  let sortInfo = {}
+  if (addTime) {
+    sortInfo.addTime = addTime
+  }
+  if (updatedTime) {
+    sortInfo.updatedTime = updatedTime
   }
   if (category) {
     findInfo.category = category
@@ -94,7 +101,7 @@ router.get('/page', async (ctx) => {
         data: res
       }
     } else {
-      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name').limit(pageSize).skip((currentPage - 1) * pageSize)
+      let res = await articleModel.find(findInfo, '-content').populate('author', 'username').populate('category', 'name').sort(sortInfo).limit(pageSize).skip((currentPage - 1) * pageSize)
       let total = await articleModel.countDocuments(findInfo)
       ctx.body = {
         code: '000000',

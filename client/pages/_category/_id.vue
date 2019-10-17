@@ -53,6 +53,7 @@ export default {
 <style lang="scss">
 .detail {
   .article-detail {
+    width: 1000px;
     border-bottom: 1px solid #eee;
     padding-bottom: 20px;
     .title {

@@ -10,9 +10,18 @@
           <span v-if="articleDetail.author">{{articleDetail.author.username}}</span>
           <span v-else>暂无信息</span>
         </span>
-        <span>属于：{{articleDetail.category.name}} 分类</span>
+        <span>属于：{{articleDetail.category.name}}分类</span>
         <span>阅读量：{{articleDetail.viewNum}}</span>
         <span>评论量：{{articleDetail.commentNum}}</span>
+      </div>
+      <div class="comment">
+        <div class="item">
+          <div class="info">
+            <div class="username">kai45666</div>
+            <div class="time">6分钟前</div>
+          </div>
+          <div class="content">1111</div>
+        </div>
       </div>
     </div>
   </div>
@@ -25,11 +34,13 @@ import { formatTime } from "@/util/common.js";
 export default {
   data() {
     return {
-      articleDetail: null
+      articleDetail: null,
+      commentList: []
     };
   },
   mounted() {
     this.getArticleDetail();
+    this.getCommentList();
   },
   methods: {
     getArticleDetail() {
@@ -40,6 +51,17 @@ export default {
         .then(res => {
           if (res.code === "000000") {
             this.articleDetail = res.data;
+          }
+        });
+    },
+    getCommentList() {
+      $axios
+        .get(Api.CommentPageApi, {
+          article: this.$route.params.id
+        })
+        .then(res => {
+          if (res.code === "000000") {
+            this.commentList = res.data.result;
           }
         });
     },
@@ -70,6 +92,28 @@ export default {
     .bottom-info {
       color: #757575;
       font-size: 13px;
+    }
+    .comment {
+      margin-top: 50px;
+      .item {
+        display: flex;
+        align-items: center;
+        .info {
+          width: 8%;
+          .username {
+            font-size: 14px;
+            color: #444;
+          }
+          .time {
+            color: #5e5e5e;
+            font-size: 12px;
+          }
+        }
+        .content {
+          font-size: 13px;
+          color: #444;
+        }
+      }
     }
   }
 }

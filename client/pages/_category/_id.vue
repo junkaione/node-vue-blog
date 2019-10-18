@@ -16,6 +16,23 @@
       </div>
       <div class="comment">
         <div class="item">
+          <img src="@/assets/img/author.jpg" alt="" width="44px">
+          <div class="info">
+            <div class="username">kai45666</div>
+            <div class="time">6分钟前</div>
+          </div>
+          <div class="content">1111</div>
+        </div>
+        <div class="item">
+          <img src="@/assets/img/author.jpg" alt="" width="44px">
+          <div class="info">
+            <div class="username">kai45666</div>
+            <div class="time">6分钟前</div>
+          </div>
+          <div class="content">1111</div>
+        </div>
+        <div class="item">
+          <img src="@/assets/img/author.jpg" alt="" width="44px">
           <div class="info">
             <div class="username">kai45666</div>
             <div class="time">6分钟前</div>
@@ -100,6 +117,7 @@ export default {
         align-items: center;
         .info {
           width: 8%;
+          margin-left: 10px;
           .username {
             font-size: 14px;
             color: #444;
@@ -110,7 +128,7 @@ export default {
           }
         }
         .content {
-          font-size: 13px;
+          font-size: 15px;
           color: #444;
         }
       }
